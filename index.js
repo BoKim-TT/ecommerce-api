@@ -7,22 +7,22 @@ const compression = require("compression");
 const cors = require("cors");
 require("dotenv").config();
 
-const { batchImportCompanies, batchImportItems } = require("./batchImport");
-const { getItems, getItem, getCompany } = require("./handlers/handlers");
+const { getItems, getItem, getCompany } = require("./handlers/itemHandler");
 const { itemsInStock, itemsOutOfStock } = require("./handlers/stockHandler");
 const {
   itemsByCategory,
   itemByBodypart,
   itemByCompany,
-} = require("./handlers/itemFilterHandlers");
-const { createOrder, getOrders } = require("./handlers/orderHandlers1");
+} = require("./handlers/itemFilterHandler");
+const { createOrder, getOrders } = require("./handlers/orderHandler");
 const {
   addItemToCart,
   creatingCart,
   getCart,
-} = require("./handlers/cartHandlers");
-const { updateQuantity } = require("./handlers/updateCartHandler");
-const { deleteItem, deleteCart } = require("./handlers/deleteCartHandlers");
+  updateQuantity,
+  deleteItem,
+  deleteCart,
+} = require("./handlers/cartHandler");
 
 const PORT = process.env.PORT || 4000;
 const app = express();
