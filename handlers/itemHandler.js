@@ -14,8 +14,14 @@ const getItems = async (req, res) => {
   try {
     await client.connect();
     const db = client.db("ecommerce");
-    const results = await db.collection("items").find().toArray();
-   
+    const results = await db
+      .collection("items")
+      .find({
+        numInStock: { $gt: 1 },
+      })
+      .limit(60)
+      .toArray();
+
     results.length <= 0
       ? res
           .status(404)

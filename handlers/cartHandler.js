@@ -1,5 +1,4 @@
 const { MongoClient } = require("mongodb");
-
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
@@ -91,7 +90,6 @@ const creatingCart = async (req, res) => {
 };
 
 //retrieving a cart
-
 const getCart = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const user = req.params.user;

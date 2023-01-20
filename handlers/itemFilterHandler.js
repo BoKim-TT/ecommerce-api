@@ -16,7 +16,17 @@ const itemsByCategory = async (req, res) => {
   try {
     await client.connect();
     const db = client.db("ecommerce");
-    const items = await db.collection("items").find({ category }).toArray();
+    const items = await db
+      .collection("items")
+      .find({
+        $and: [
+          { category: category },
+          {
+            numInStock: { $gt: 1 },
+          },
+        ],
+      })
+      .toArray();
     //checking if category contains items if so status 200 if not status 404
     items.length > 0
       ? res.status(200).json({
