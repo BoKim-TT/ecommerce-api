@@ -19,7 +19,7 @@ const getItems = async (req, res) => {
       .find({
         numInStock: { $gt: 1 },
       })
-      .limit(60)
+      .limit(30)
       .toArray();
 
     results.length <= 0
