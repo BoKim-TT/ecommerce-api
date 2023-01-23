@@ -105,8 +105,8 @@ const getCart = async (req, res) => {
         .json({ status: 200, data: cart, message: "cart retreieved" });
     } else {
       return res
-        .status(404)
-        .json({ status: 404, data: cart, message: "cart not found" });
+        .status(204)
+        .json({ status: 204, message: "cart not found" });
     }
   } catch (err) {
     return res
