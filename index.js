@@ -1,20 +1,20 @@
-"use strict";
+'use strict';
 
-const express = require("express");
-const morgan = require("morgan");
-const path = require("path");
-const compression = require("compression");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
+const compression = require('compression');
+const cors = require('cors');
+require('dotenv').config();
 
-const { getItems, getItem, getCompany } = require("./handlers/itemHandler");
-const { itemsInStock, itemsOutOfStock } = require("./handlers/stockHandler");
+const { getItems, getItem, getCompany } = require('./handlers/itemHandler');
+const { itemsInStock, itemsOutOfStock } = require('./handlers/stockHandler');
 const {
   itemsByCategory,
   itemByBodypart,
   itemByCompany,
-} = require("./handlers/itemFilterHandler");
-const { createOrder, getOrders } = require("./handlers/orderHandler");
+} = require('./handlers/itemFilterHandler');
+const { createOrder, getOrders } = require('./handlers/orderHandler');
 const {
   addItemToCart,
   creatingCart,
@@ -22,90 +22,85 @@ const {
   updateQuantity,
   deleteItem,
   deleteCart,
-} = require("./handlers/cartHandler");
+} = require('./handlers/cartHandler');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cors());
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("tiny"));
-}
-if (process.env.NODE_ENV === "production") {
-  app.use(compression());
-  app.use(express.static("client/build"));
-  app.get("/", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('tiny'));
 }
 
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(compression());
+app.use(express.static(path.join(__dirname, '/public')));
+
 //---------------item endpoints ---------------------//
 //GET all items
 //returns an array if objects
 app
-  .get("/api/items", getItems)
+  .get('/api/items', getItems)
 
   //GET a particular item based on ID
   //returns an object
-  .get("/api/items/:itemId", getItem);
+  .get('/api/items/:itemId', getItem);
 
 //GET an array of items based on the same category
-app.get("/api/items/category/:category", itemsByCategory);
+app.get('/api/items/category/:category', itemsByCategory);
 
 //GET an array of items based on the same body part
-app.get("/api/items/body-part/:bodypart", itemByBodypart);
+app.get('/api/items/body-part/:bodypart', itemByBodypart);
 
 //GET an array of items based on the same company
-app.get("/api/items/company/:companyId", itemByCompany);
+app.get('/api/items/company/:companyId', itemByCompany);
 
 //GET items array based on if they're in stock
-app.get("/api/items-instock", itemsInStock);
+app.get('/api/items-instock', itemsInStock);
 
 //GET items array based on if they're out of stock
-app.get("/api/items-out-of-stock", itemsOutOfStock);
+app.get('/api/items-out-of-stock', itemsOutOfStock);
 
 //-------------- Company endpoints --------------------------//
 
 //GET a company based on ID, return an object
-app.get("/api/companies/:companyId", getCompany);
+app.get('/api/companies/:companyId', getCompany);
 
 //---------------- Order endpoints ---------------------------//
 
 //POST creating an order for checkout --- does not work
-app.post("/api/order/:user", createOrder);
+app.post('/api/order/:user', createOrder);
 
 // GET for retrieving all the orders
-app.get("/api/order/:user", getOrders);
+app.get('/api/order/:user', getOrders);
 //GET for retreiving an order based on the order _id
 
 //------------------------CART endpoints ---------------------------//
 
 //POST for creating new cart if cart does not exist and adding non repeatable items to cart
-app.post("/api/cart/:user", creatingCart);
+app.post('/api/cart/:user', creatingCart);
 
 //GET for retrieveing a cart
-app.get("/api/cart/:user", getCart);
+app.get('/api/cart/:user', getCart);
 
 //patch to update the quantity of the item
-app.patch("/api/cart/:user", updateQuantity);
+app.patch('/api/cart/:user', updateQuantity);
 
 //delete item in cart
-app.delete("/api/cart/:user", deleteItem);
+app.delete('/api/cart/:user', deleteItem);
 
 // emptying users cart
-app.delete("/api/empty-cart/:user", deleteCart);
+app.delete('/api/empty-cart/:user', deleteCart);
 
 // ------------------- this is our catch all endpoint -------------------//
 
-app.get("*", (req, res) => {
+app.get('*', (req, res) => {
   res.status(404).json({
     status: 404,
-    message: "This is obviously not what you are looking for.",
+    message: 'This is obviously not what you are looking for.',
   });
 });
 
