@@ -1,6 +1,6 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient } = require('mongodb');
 
-require("dotenv").config();
+require('dotenv').config();
 const { MONGO_URI } = process.env;
 
 const options = {
@@ -15,9 +15,9 @@ const itemsByCategory = async (req, res) => {
 
   try {
     await client.connect();
-    const db = client.db("ecommerce");
+    const db = client.db('ecommerce');
     const items = await db
-      .collection("items")
+      .collection('items')
       .find({
         $and: [
           { category: category },
@@ -26,7 +26,7 @@ const itemsByCategory = async (req, res) => {
           },
         ],
       })
-      .limit(20)
+      .limit(16)
       .toArray();
     //checking if category contains items if so status 200 if not status 404
     items.length > 0
@@ -56,9 +56,9 @@ const itemByBodypart = async (req, res) => {
   const body_location = req.params.bodypart;
   try {
     await client.connect();
-    const db = client.db("ecommerce");
+    const db = client.db('ecommerce');
     const items = await db
-      .collection("items")
+      .collection('items')
       .find({ body_location })
       .toArray();
     //checking if category contains items if so status 200 if not status 404
@@ -88,8 +88,8 @@ const itemByCompany = async (req, res) => {
   const companyId = Number(req.params.companyId);
   try {
     await client.connect();
-    const db = client.db("ecommerce");
-    const items = await db.collection("items").find({ companyId }).toArray();
+    const db = client.db('ecommerce');
+    const items = await db.collection('items').find({ companyId }).toArray();
     //checking if category contains items if so status 200 if not status 404
     items.length > 0
       ? res.status(200).json({
