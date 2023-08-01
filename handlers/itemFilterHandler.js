@@ -26,7 +26,7 @@ const itemsByCategory = async (req, res) => {
           },
         ],
       })
-      .limit(16)
+      .limit(12)
       .toArray();
     //checking if category contains items if so status 200 if not status 404
     items.length > 0
